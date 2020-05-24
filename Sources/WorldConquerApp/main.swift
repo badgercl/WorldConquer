@@ -10,8 +10,10 @@ let jsonFile = CommandLine.arguments[1]
 let worldProvider = JsonWorldProvider(path: jsonFile)
 let closenessCalculator = RandomCloseness()
 let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
+let views: [View] = [ConsoleView()]
 
 let game = Game(worldProvider: worldProvider,
                 closenessCalculator: closenessCalculator,
-                winningTerritoryCalculator: winningTerritoryCalculator)
+                winningTerritoryCalculator: winningTerritoryCalculator,
+                views: views)
 game.start()

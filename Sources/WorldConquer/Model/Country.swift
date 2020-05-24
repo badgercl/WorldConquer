@@ -1,6 +1,6 @@
 import Foundation
 
-final class Country: Equatable {
+public final class Country: Equatable {
     let name: String
     var territories: Set<Territory>
 
@@ -24,7 +24,7 @@ final class Country: Equatable {
         territory.belongsTo = self
     }
 
-    static func == (lhs: Country, rhs: Country) -> Bool {
+    public static func == (lhs: Country, rhs: Country) -> Bool {
         return lhs.name == rhs.name && lhs.territories == rhs.territories
     }
 
