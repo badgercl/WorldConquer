@@ -1,19 +1,40 @@
+import ArgumentParser
 import Foundation
 import WorldConquer
 
-guard CommandLine.argc > 1 else {
-    print("invalid parameters")
-    exit(1)
+struct WorldConquerApp: ParsableCommand {
+    @Option(name:   [.short, .customLong("json")], help: "A JSON file describing the games' world")
+    var jsonPath: String
+
+    @Option(name: .shortAndLong, default: 1, help: "Seconds between every step")
+    var stepTime: Int
+
+    @Flag(name: [.long], help: "Show console logs")
+    var verbose: Bool
+
+    func validate() throws {
+        guard stepTime >= 0 else {
+            throw ValidationError("StepTime must be a positive number")
+        }
+    }
+
+    func run() throws {
+        let worldProvider = JsonWorldProvider(path: jsonPath)
+        let closenessCalculator = RandomCloseness()
+        let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
+        var views: [View] = []
+
+        if verbose {
+            views.append(ConsoleView())
+        }
+
+        let game = Game(worldProvider: worldProvider,
+                        closenessCalculator: closenessCalculator,
+                        winningTerritoryCalculator: winningTerritoryCalculator,
+                        views: views,
+                        stepTime: stepTime)
+        game.start()
+    }
 }
 
-let jsonFile = CommandLine.arguments[1]
-let worldProvider = JsonWorldProvider(path: jsonFile)
-let closenessCalculator = RandomCloseness()
-let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
-let views: [View] = [ConsoleView()]
-
-let game = Game(worldProvider: worldProvider,
-                closenessCalculator: closenessCalculator,
-                winningTerritoryCalculator: winningTerritoryCalculator,
-                views: views)
-game.start()
+WorldConquerApp.main()
