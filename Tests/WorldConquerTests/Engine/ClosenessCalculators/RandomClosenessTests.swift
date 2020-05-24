@@ -18,7 +18,7 @@ final class RandomClosenessTests: XCTestCase {
         territory1 = Territory(name: "T1", population: 1, belongsTo: country1)
         territory2 = Territory(name: "T2", population: 2, belongsTo: country2)
         continent = Continent(name: "continent", territories: [territory1, territory2])
-        world = World(age: 1, continents: [continent])
+        world = World(age: LinearAge(age: 0), continents: [continent])
         sut = RandomCloseness()
     }
 
@@ -44,7 +44,7 @@ final class RandomClosenessTests: XCTestCase {
     }
 
     func testInA1TerritoryWorldGetTheSame() {
-        let oneTerritoryWorld = World(age: 1, continents: [
+        let oneTerritoryWorld = World(age: LinearAge(age: 0), continents: [
             .init(name: "", territories: [territory1])
         ])
         let result = sut.getRandomCloseTerritory(for: territory1, in: oneTerritoryWorld)

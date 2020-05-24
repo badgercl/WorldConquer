@@ -112,7 +112,7 @@ final class EngineTests: XCTestCase {
     }
 
     func testInvalidStateThrows() {
-        let sut = Engine(world: World(age: 0, continents: []),
+        let sut = Engine(world: World(age: LinearAge(age: 0), continents: []),
                          closenessCalculator: closenessCalculator,
                          winningTerritoryCalculator: winningTerritoryCalculator)
         XCTAssertThrowsError(try sut.step())

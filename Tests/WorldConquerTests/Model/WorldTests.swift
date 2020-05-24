@@ -19,7 +19,7 @@ final class WorldTests: XCTestCase {
         territory2 = Territory(name: "territory2", population: 1, belongsTo: country2)
         continent1 = Continent(name: "continen1", territories: [territory1])
         continent2 = Continent(name: "continent2", territories: [territory2])
-        sut = World(age: 1, continents: [continent1, continent2])
+        sut = World(age: LinearAge(age: 1), continents: [continent1, continent2])
     }
 
     override func tearDown() {
@@ -47,7 +47,7 @@ final class WorldTests: XCTestCase {
 
     func testNextIterationDifferentCountryChangesOwnership() {
         sut.nextIteration(winningCountry: country2, conqueredTerritory: territory1)
-        XCTAssertEqual(sut.age, 2)
+        XCTAssertEqual(sut.age.description, "2")
         XCTAssertEqual(country2.territories, [territory2, territory1])
         XCTAssertEqual(country1.territories, [])
         XCTAssertEqual(territory1.belongsTo, country2)
@@ -55,7 +55,7 @@ final class WorldTests: XCTestCase {
 
     func testNextIterationSameCountryDoesNothing() {
         sut.nextIteration(winningCountry: country2, conqueredTerritory: territory2)
-        XCTAssertEqual(sut.age, 2)
+        XCTAssertEqual(sut.age.description, "2")
         XCTAssertEqual(country1.territories, [territory1])
         XCTAssertEqual(country2.territories, [territory2])
         XCTAssertEqual(territory1.belongsTo, country1)

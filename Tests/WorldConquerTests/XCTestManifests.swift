@@ -10,7 +10,6 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(ContinentTests.allTests),
         testCase(CountryTests.allTests),
         testCase(TerritoryTests.allTests),
-        testCase(JsonWorldProviderTests.allTests)
     ]
 }
 #endif

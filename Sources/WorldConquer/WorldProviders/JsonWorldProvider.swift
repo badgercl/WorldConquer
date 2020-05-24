@@ -12,7 +12,7 @@ public struct JsonWorldProvider: WorldProvider {
         let jsonDecoder = JSONDecoder()
         let jsonContinents = try! jsonDecoder.decode([JsonContinent].self, from: data!)
         let continents: [Continent] = jsonContinents.map(transformContinent)
-        return World(age: 0, continents: continents)
+        return World(age: LinearAge(), continents: continents)
     }
 
     private func transformContinent(continent: JsonContinent) -> Continent {

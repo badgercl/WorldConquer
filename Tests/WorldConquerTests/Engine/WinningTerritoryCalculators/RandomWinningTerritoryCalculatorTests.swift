@@ -18,7 +18,7 @@ final class RandomWinningTerritoryCalculatorTests: XCTestCase {
         territory1 = Territory(name: "T1", population: 1, belongsTo: country1)
         territory2 = Territory(name: "T2", population: 2, belongsTo: country2)
         continent = Continent(name: "continent", territories: [territory1, territory2])
-        world = World(age: 1, continents: [continent])
+        world = World(age: LinearAge(age: 0), continents: [continent])
         sut = RandomWinningTerritoryCalculator()
     }
 
@@ -44,7 +44,7 @@ final class RandomWinningTerritoryCalculatorTests: XCTestCase {
     }
 
     func testEmptyWorldReturnsNil() {
-        let result = sut.winningTerritory(in: World(age: 0, continents: []))
+        let result = sut.winningTerritory(in: World(age: LinearAge(age: 0), continents: []))
         XCTAssertNil(result)
     }
 }

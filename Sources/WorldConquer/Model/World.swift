@@ -1,7 +1,7 @@
 import Foundation
 
 public final class World {
-    var age: Int
+    var age: Age
     let continents: [Continent]
     let countries: [Country]
 
@@ -13,19 +13,19 @@ public final class World {
         return winner
     }
 
-    init(age: Int, continents: [Continent]) {
+    init(age: Age, continents: [Continent]) {
         self.age = age
         self.continents = continents
         self.countries = continents.map(\.countries).reduce([]) { $0 + $1 }
     }
 
     func nextIteration(winningCountry: Country, conqueredTerritory: Territory) {
-        age += 1
+        age = age.nextAge()
         winningCountry.conquer(territory: conqueredTerritory)
     }
 
     var description: String {
         let countriesStrings = countries.filter{ $0.territories.count > 0}.map(\.description).joined(separator: "; ")
-        return "Age: \(age), countries: \(countriesStrings)"
+        return "Age: \(age.description), countries: \(countriesStrings)"
     }
 }
