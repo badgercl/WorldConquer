@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol WinningTerritoryCalculator {
+public protocol WinningTerritoryCalculator {
     func winningTerritory(in world: World) -> Territory?
 }

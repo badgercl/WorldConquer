@@ -1,17 +1,17 @@
 import Foundation
 
-final class Game {
+public final class Game {
     private let engine: Engine
 
-    init(worldProvider: WorldProvider,
-         closenessCalculator: ClosenessCalculator,
-         winningTerritoryCalculator: WinningTerritoryCalculator) {
+    public init(worldProvider: WorldProvider,
+                closenessCalculator: ClosenessCalculator,
+                winningTerritoryCalculator: WinningTerritoryCalculator) {
         self.engine = Engine(world: worldProvider.generate(),
                              closenessCalculator: closenessCalculator,
                              winningTerritoryCalculator: winningTerritoryCalculator)
     }
 
-    func start() {
+    public func start() {
         while true {
             try! engine.step()
             if let winner = engine.winner {

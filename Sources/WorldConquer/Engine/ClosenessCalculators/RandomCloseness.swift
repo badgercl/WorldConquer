@@ -1,7 +1,8 @@
 import Foundation
 
-struct RandomCloseness: ClosenessCalculator {
-    func getRandomCloseTerritory(for territory: Territory, in world: World) -> Territory? {
+public struct RandomCloseness: ClosenessCalculator {
+    public init() { }
+    public func getRandomCloseTerritory(for territory: Territory, in world: World) -> Territory? {
         guard world.continents.map(\.territories.count).reduce(0, { $0 + $1 }) > 1 else {
             return territory
         }

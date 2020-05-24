@@ -1,4 +1,5 @@
 import Foundation
+import WorldConquer
 
 guard CommandLine.argc > 1 else {
     print("invalid parameters")

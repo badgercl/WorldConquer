@@ -1,6 +1,6 @@
 import Foundation
 
-final class World {
+public final class World {
     var age: Int
     let continents: [Continent]
     let countries: [Country]

@@ -1,6 +1,6 @@
 import Foundation
 
-final class Territory: Hashable, Equatable {
+public final class Territory: Hashable, Equatable {
     let name: String
     let population: Int
     var belongsTo: Country
@@ -12,12 +12,12 @@ final class Territory: Hashable, Equatable {
         belongsTo.add(territory: self)
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(name)
         hasher.combine(population)
     }
 
-    static func == (lhs: Territory, rhs: Territory) -> Bool {
+    public static func == (lhs: Territory, rhs: Territory) -> Bool {
         return lhs.name == rhs.name && lhs.population == rhs.population
     }
 }

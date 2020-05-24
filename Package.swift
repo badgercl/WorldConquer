@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "WorldConquer",
+    products: [
+        .library(name: "WorldConquer", targets: ["WorldConquer"]),
+        .executable(name: "WorldConquerApp", targets: ["WorldConquerApp"])
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),

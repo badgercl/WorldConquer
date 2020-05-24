@@ -1,6 +1,6 @@
 import Foundation
 
-protocol WorldProvider {
+public protocol WorldProvider {
     func generate() -> World
 }
 

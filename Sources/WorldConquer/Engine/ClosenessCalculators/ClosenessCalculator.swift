@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ClosenessCalculator {
+public protocol ClosenessCalculator {
     func getRandomCloseTerritory(for territory: Territory, in world: World) -> Territory?
 }
