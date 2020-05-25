@@ -14,7 +14,7 @@ public struct TelegramView: View {
         case .error:
             break
         case .step(let stepViewState):
-            showStep(stepViewState)
+            showStepState(stepViewState)
         case .winner(let winner):
             showWinner(winner)
         }
@@ -23,14 +23,23 @@ public struct TelegramView: View {
     private func showError() {
         sendMessage(text: "An error occured, the games is over")
     }
-    private func showStep(_ stepViewState: StepViewState) {
-        let worldStatus: String = stepViewState.world.countries.filter{ $0.territories.count > 0 }.map {
-            let territories = $0.territories.map(\.name).joined(separator: ", ")
-            return "\($0.name) (\($0.territories.count): [\(territories)]"
-        }.joined(separator: "\n")
-        let text = "Periodo: \(stepViewState.world.age.description)\n\(worldStatus)"
+
+    private func showStepState(_ stepState: StepState) {
+        let worldStatus: String = stepState
+            .world
+            .countries
+            .sorted { $0.territories.count > $1.territories.count }
+            .filter { $0.territories.count > 1 }
+            .prefix(10)
+            .map {
+                let territories = $0.territories.map(\.name).joined(separator: ", ")
+                return " - *\($0.name)* (\($0.territories.count): [\(territories)]"
+            }
+            .joined(separator: "\n")
+        let text = "In year: \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.winner.name)* which was previously occupied by \(stepState.looser.name)\nWorld Status (countries) with more than 1 territory):\n\(worldStatus)"
         sendMessage(text: text)
     }
+
     private func showWinner(_ winner: Country) {
         let text = "Ganador: \(winner.name)"
         sendMessage(text: text)

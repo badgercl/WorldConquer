@@ -19,8 +19,8 @@ public struct ConsoleView: View {
         }
     }
 
-    private func showWorldState(_ stepViewState: StepViewState) {
-        logger.info("\(stepViewState.world.description)")
+    private func showWorldState(_ stepState: StepState) {
+        logger.info("[Year \(stepState.world.age.description)] \(stepState.winner.name) conquered \(stepState.territory.name) previosly occupied by \(stepState.looser.name)")
     }
 
     private func showWinner(_ winner: Country) {

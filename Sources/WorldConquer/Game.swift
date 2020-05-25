@@ -20,13 +20,12 @@ public final class Game {
     public func start() {
         while true {
             do {
-                let (winnerTerritory, loosingCountry) = try engine.step()
+                let stepState = try engine.step()
+                viewsManager.render(.step(stepState))
+
                 if let winner = engine.winner {
                     viewsManager.render(.winner(winner))
                     exit(0)
-                } else {
-
-                    viewsManager.render(.step(.init(world: engine.currentWorld, winner: winnerTerritory, loosingCountry: loosingCountry)))
                 }
             } catch {
                 viewsManager.render(.error)

@@ -5,15 +5,16 @@ public protocol View {
 }
 
 public enum ViewState {
-    case step(StepViewState)
+    case step(StepState)
     case winner(Country)
     case error
 }
 
-public struct StepViewState {
+public struct StepState {
     let world: World
-    let winner: Territory
-    let loosingCountry: Country
+    let winner: Country
+    let looser: Country
+    let territory: Territory
 }
 
 struct ViewsManager {

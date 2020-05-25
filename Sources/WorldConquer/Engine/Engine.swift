@@ -20,7 +20,7 @@ final class Engine {
         self.world = world
     }
 
-    func step() throws -> (winner: Territory, loosingCountry: Country) {
+    func step() throws -> StepState {
         guard let winningTerritory = winningTerritoryCalculator.winningTerritory(in: world),
             let conqueredTerritory = closenessCalculator.getRandomCloseTerritory(for: winningTerritory, in: world) else {
                 throw EngineError.invalidState
@@ -28,6 +28,6 @@ final class Engine {
         let winningCountry = winningTerritory.belongsTo
         let loosingCountry = conqueredTerritory.belongsTo
         world.nextIteration(winningCountry: winningCountry, conqueredTerritory: conqueredTerritory)
-        return (winner: winningTerritory, loosingCountry: loosingCountry)
+        return .init(world: world, winner: winningCountry, looser: loosingCountry, territory: conqueredTerritory)
     }
 }
