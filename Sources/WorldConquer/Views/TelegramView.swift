@@ -1,5 +1,4 @@
 import Foundation
-import HTMLEntities
 
 public struct TelegramView: View {
     private let path: String
@@ -14,8 +13,8 @@ public struct TelegramView: View {
         switch viewState {
         case .error:
             break
-        case .step(let world):
-            showStep(world)
+        case .step(let stepViewState):
+            showStep(stepViewState)
         case .winner(let winner):
             showWinner(winner)
         }
@@ -24,12 +23,12 @@ public struct TelegramView: View {
     private func showError() {
         sendMessage(text: "An error occured, the games is over")
     }
-    private func showStep(_ world: World) {
-        let worldStatus: String = world.countries.filter{ $0.territories.count > 0 }.map {
+    private func showStep(_ stepViewState: StepViewState) {
+        let worldStatus: String = stepViewState.world.countries.filter{ $0.territories.count > 0 }.map {
             let territories = $0.territories.map(\.name).joined(separator: ", ")
             return "\($0.name) (\($0.territories.count): [\(territories)]"
         }.joined(separator: "\n")
-        let text = "Periodo: \(world.age.description)\n\(worldStatus)"
+        let text = "Periodo: \(stepViewState.world.age.description)\n\(worldStatus)"
         sendMessage(text: text)
     }
     private func showWinner(_ winner: Country) {

@@ -10,8 +10,8 @@ public struct ConsoleView: View {
 
     public func render(_ viewState: ViewState) {
         switch viewState {
-        case .step(let world):
-            showWorldState(world)
+        case .step(let stepViewState):
+            showWorldState(stepViewState)
         case .winner(let winner):
             showWinner(winner)
         case .error:
@@ -19,8 +19,8 @@ public struct ConsoleView: View {
         }
     }
 
-    private func showWorldState(_ world: World) {
-        logger.info("\(world.description)")
+    private func showWorldState(_ stepViewState: StepViewState) {
+        logger.info("\(stepViewState.world.description)")
     }
 
     private func showWinner(_ winner: Country) {
