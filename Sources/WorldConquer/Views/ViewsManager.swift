@@ -5,6 +5,7 @@ public protocol View {
 }
 
 public enum ViewState {
+    case start(World)
     case step(StepState)
     case winner(Country)
     case error

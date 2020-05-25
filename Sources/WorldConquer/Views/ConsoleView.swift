@@ -10,6 +10,8 @@ public struct ConsoleView: View {
 
     public func render(_ viewState: ViewState) {
         switch viewState {
+        case .start(let world):
+            showStartGame(world)
         case .step(let stepViewState):
             showWorldState(stepViewState)
         case .winner(let winner):
@@ -17,6 +19,10 @@ public struct ConsoleView: View {
         case .error:
             showError()
         }
+    }
+
+    private func showStartGame(_ world: World) {
+        logger.info("Game started with World:\n\(world.description)")
     }
 
     private func showWorldState(_ stepState: StepState) {

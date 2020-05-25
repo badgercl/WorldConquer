@@ -18,6 +18,7 @@ public final class Game {
     }
 
     public func start() {
+        viewsManager.render(.start(engine.currentWorld  ))
         while true {
             do {
                 let stepState = try engine.step()

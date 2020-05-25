@@ -11,6 +11,8 @@ public struct TelegramView: View {
 
     public func render(_ viewState: ViewState) {
         switch viewState {
+        case .start(let world):
+            showStartGame(world)
         case .error:
             break
         case .step(let stepViewState):
@@ -22,6 +24,15 @@ public struct TelegramView: View {
 
     private func showError() {
         sendMessage(text: "An error occured, the games is over")
+    }
+
+    private func showStartGame(_ world: World) {
+        let worldStatus: String = world.countries.map {
+            let territories = $0.territories.map(\.name).joined(separator: ", ")
+            return " - *\($0.name)* (\($0.territories.count) ): [\(territories)]"
+        }.joined(separator: "\n")
+        let text = "Game started with World:\n\(worldStatus)"
+        sendMessage(text: text)
     }
 
     private func showStepState(_ stepState: StepState) {
@@ -36,7 +47,7 @@ public struct TelegramView: View {
                 return " - *\($0.name)* (\($0.territories.count): [\(territories)]"
             }
             .joined(separator: "\n")
-        let text = "In year: \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.winner.name)* which was previously occupied by \(stepState.looser.name)\nWorld Status (countries) with more than 1 territory):\n\(worldStatus)"
+        let text = "In year: \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.territory.name)* which was previously occupied by \(stepState.looser.name)\nWorld Status (countries) with more than 1 territory):\n\(worldStatus)"
         sendMessage(text: text)
     }
 
@@ -46,10 +57,28 @@ public struct TelegramView: View {
     }
 
     private func sendMessage(text: String) {
+        guard text.count > 400 else {
+            sendChunkMessage(text: text)
+            return
+        }
+        var chunk: String = ""
+        text
+            .split(separator: "\n")
+            .forEach {
+                if chunk.count > 400 {
+                    sendChunkMessage(text: chunk)
+                    chunk = ""
+                }
+                chunk += "\($0)\n"
+        }
+    }
+
+    private func sendChunkMessage(text: String) {
         var urlRequest = URLRequest(url: URL(string: path)!)
         let json: [String: Any] = [
             "chat_id": chatId,
-            "text": text
+            "text": text,
+            "parse_mode": "markdown"
         ]
         let data = try! JSONSerialization.data(withJSONObject: json)
         urlRequest.httpMethod = "POST"
