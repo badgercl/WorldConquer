@@ -22,7 +22,7 @@ final class Engine {
 
     func step() throws -> StepState {
         guard let winningTerritory = winningTerritoryCalculator.winningTerritory(in: world),
-            let conqueredTerritory = closenessCalculator.getRandomCloseTerritory(for: winningTerritory, in: world) else {
+            let conqueredTerritory = closenessCalculator.getCloseTerritory(for: winningTerritory, in: world) else {
                 throw EngineError.invalidState
         }
         let winningCountry = winningTerritory.belongsTo

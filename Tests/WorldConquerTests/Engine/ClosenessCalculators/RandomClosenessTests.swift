@@ -39,7 +39,7 @@ final class RandomClosenessTests: XCTestCase {
     ]
 
     func testNormalCase() {
-        let result = sut.getRandomCloseTerritory(for: territory1, in: world)
+        let result = sut.getCloseTerritory(for: territory1, in: world)
         XCTAssertEqual(result, territory2)
     }
 
@@ -47,7 +47,7 @@ final class RandomClosenessTests: XCTestCase {
         let oneTerritoryWorld = World(age: LinearAge(age: 0), continents: [
             .init(name: "", territories: [territory1])
         ])
-        let result = sut.getRandomCloseTerritory(for: territory1, in: oneTerritoryWorld)
+        let result = sut.getCloseTerritory(for: territory1, in: oneTerritoryWorld)
         XCTAssertEqual(result, territory1)
     }
 }

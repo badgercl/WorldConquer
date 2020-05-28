@@ -72,7 +72,7 @@ final class EngineTests: XCTestCase {
         let conqueredTerritory = territory1
         let winningTerritory = territory3
         winningTerritoryCalculator.winningTerritoryReturnValue = winningTerritory
-        closenessCalculator.getRandomCloseTerritoryReturnValue = conqueredTerritory
+        closenessCalculator.getCloseTerritoryReturnValue = conqueredTerritory
 
         // When
         try! sut.step()
@@ -91,15 +91,15 @@ final class EngineTests: XCTestCase {
         winningTerritoryCalculator.winningTerritoryReturnValue = territory3
 
         // C2 conquers T1
-        closenessCalculator.getRandomCloseTerritoryReturnValue = territory1
+        closenessCalculator.getCloseTerritoryReturnValue = territory1
         try! sut.step()
 
         // C2 conquers T2
-        closenessCalculator.getRandomCloseTerritoryReturnValue = territory2
+        closenessCalculator.getCloseTerritoryReturnValue = territory2
         try! sut.step()
 
         // C2 conquers T4
-        closenessCalculator.getRandomCloseTerritoryReturnValue = territory4
+        closenessCalculator.getCloseTerritoryReturnValue = territory4
 
         // When
         try! sut.step()

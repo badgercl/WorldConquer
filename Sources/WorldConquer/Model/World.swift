@@ -25,7 +25,7 @@ public final class World {
     }
 
     var description: String {
-        let countriesStrings = countries.filter{ $0.territories.count > 0}.map(\.description).joined(separator: "; ")
+        let countriesStrings = continents.map(\.description).joined(separator: "\n")
         return "Age: \(age.description), countries: \(countriesStrings)"
     }
 }

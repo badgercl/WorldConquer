@@ -2,12 +2,12 @@ import Foundation
 @testable import WorldConquer
 
 final class ClosenessCalculatorMock: ClosenessCalculator {
-    var getRandomCloseTerritoryCallsCount = 0
-    var getRandomCloseTerritoryReturnValue: Territory?
-    var getRandomCloseTerritoryParams: [(territory: Territory, world: World)] = []
-    func getRandomCloseTerritory(for territory: Territory, in world: World) -> Territory? {
-        getRandomCloseTerritoryCallsCount += 1
-        getRandomCloseTerritoryParams.append((territory: territory, world: world))
-        return getRandomCloseTerritoryReturnValue
+    var getCloseTerritoryCallsCount = 0
+    var getCloseTerritoryReturnValue: Territory?
+    var getCloseTerritoryParams: [(territory: Territory, world: World)] = []
+    func getCloseTerritory(for territory: Territory, in world: World) -> Territory? {
+        getCloseTerritoryCallsCount += 1
+        getCloseTerritoryParams.append((territory: territory, world: world))
+        return getCloseTerritoryReturnValue
     }
 }

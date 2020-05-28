@@ -30,7 +30,7 @@ public struct ConsoleView: View {
     }
 
     private func showWinner(_ winner: Country) {
-        logger.info("Game ended with winning country: \(winner.description)")
+        logger.info("Game ended with winning country: \(winner.name)")
     }
 
     private func showError() {

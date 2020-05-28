@@ -20,7 +20,7 @@ struct WorldConquerApp: ParsableCommand {
 
     func run() throws {
         let worldProvider = JsonWorldProvider(path: jsonPath)
-        let closenessCalculator = RandomCloseness()
+        let closenessCalculator = ContinentBoundedClosenessCalculator()
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
 
