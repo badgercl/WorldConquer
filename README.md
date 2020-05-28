@@ -9,9 +9,11 @@ Swift implementation based on [World War Bot's rules](https://worldwarbot.com/ab
 - Customizable output: the game status can be updated in different supports, e.g. Twitter, Telegram, console log, filesystem. (Currently only console output is provided).
 
 ## Future work
-- Include more rules
+- Include more selection rules
 - Implement Telegram and Twitter outputs
 - Generate dot-notation world states
+- Internationalisation
+- Interactions with the bot
 
 # Requirements
 * Swift 5.2.2+ installed in your macOS or Linux machine. 
