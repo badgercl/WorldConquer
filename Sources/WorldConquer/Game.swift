@@ -18,7 +18,7 @@ public final class Game {
     }
 
     public func start() {
-        viewsManager.render(.start(engine.currentWorld  ))
+        viewsManager.render(.start(engine.currentWorld))
         while true {
             do {
                 let stepState = try engine.step()
@@ -26,6 +26,7 @@ public final class Game {
 
                 if let winner = engine.winner {
                     viewsManager.render(.winner(winner))
+                    sleep(2)
                     exit(0)
                 }
             } catch {
