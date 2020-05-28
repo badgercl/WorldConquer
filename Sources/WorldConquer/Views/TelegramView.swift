@@ -27,10 +27,7 @@ public struct TelegramView: View {
     }
 
     private func showStartGame(_ world: World) {
-        let worldStatus: String = world.countries.map {
-            let territories = $0.territories.map(\.name).joined(separator: ", ")
-            return " - *\($0.name)* (\($0.territories.count)): [\(territories)]"
-        }.joined(separator: "\n")
+        let worldStatus: String = world.continents.map { "*\($0.name)*: [\($0.countries.map(\.name).joined(separator: ", "))]" }.joined(separator: "\n")        
         let text = "Game started with World:\n\(worldStatus)"
         sendMessage(text: text)
     }
