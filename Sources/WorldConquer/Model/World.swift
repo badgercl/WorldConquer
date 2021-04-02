@@ -19,6 +19,12 @@ public final class World {
         self.countries = continents.map(\.countries).reduce([]) { $0 + $1 }
     }
 
+    init(age: Age, continents: [Continent], countries: [Country]) {
+        self.age = age
+        self.continents = continents
+        self.countries = countries
+    }
+
     func nextIteration(winningCountry: Country, conqueredTerritory: Territory) {
         age = age.nextAge()
         winningCountry.conquer(territory: conqueredTerritory)

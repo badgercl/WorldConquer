@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Territory: Hashable, Equatable {
+public final class Territory: Hashable {
     let name: String
     let population: Int
     var belongsTo: Country

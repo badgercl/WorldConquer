@@ -1,12 +1,16 @@
 import Foundation
 
-public final class Country: Equatable {
+public final class Country: Hashable {
     let name: String
     var territories: Set<Territory>
 
     init(name: String) {
         self.name = name
         self.territories = []
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     func add(territory: Territory) {

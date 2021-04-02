@@ -24,15 +24,21 @@ struct WorldConquerApp: ParsableCommand {
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
 
+        views.append(TelegramView(token: "690106940:AAH4kLH6o8OsDS1gKRkEkjzIGehLBgtyBzU", chatId: "7372677"))
+
         if verbose {
             views.append(ConsoleView())
         }
 
-        let game = Game(worldProvider: worldProvider,
-                        closenessCalculator: closenessCalculator,
-                        winningTerritoryCalculator: winningTerritoryCalculator,
-                        views: views,
-                        stepTime: stepTime)
+//        let game = MultiStepGame(worldProvider: worldProvider,
+//                                 closenessCalculator: closenessCalculator,
+//                                 winningTerritoryCalculator: winningTerritoryCalculator,
+//                                 views: views,
+//                                 stepTime: stepTime)
+        let game = SingleStepGame(worldProvider: worldProvider,
+                                  closenessCalculator: closenessCalculator,
+                                  winningTerritoryCalculator: winningTerritoryCalculator,
+                                  views: views)
         game.start()
     }
 }

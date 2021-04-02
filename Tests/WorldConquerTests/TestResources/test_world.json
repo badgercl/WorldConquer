@@ -1,0 +1,57 @@
+{
+    "age": 0,
+    "continents": [
+        {
+            "name": "Antarctica",
+            "territories": [
+                {
+                    "name": "Antarctica",
+                    "population": 1,
+                    "belongsTo": {
+                        "name": "Bolivia"
+                    }
+                },
+                {
+                    "name": "Bouvet Island",
+                    "population": 2,
+                    "belongsTo": {
+                        "name": "Bolivia"
+                    }
+                },
+                {
+                    "name": "French Southern territories",
+                    "population": 3,
+                    "belongsTo": {
+                        "name": "French Southern territories"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "South America",
+            "territories": [
+                {
+                    "name": "Argentina",
+                    "population": 4,
+                    "belongsTo": {
+                        "name": "Argentina"
+                    }
+                },
+                {
+                    "name": "Bolivia",
+                    "population": 5,
+                    "belongsTo": {
+                        "name": "Bolivia"
+                    }
+                },
+                {
+                    "name": "Chile",
+                    "population": 6,
+                    "belongsTo": {
+                        "name": "Argentina"
+                    }
+                }
+            ]
+        }
+    ]
+}

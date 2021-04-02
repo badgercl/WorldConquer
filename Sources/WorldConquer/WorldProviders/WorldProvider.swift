@@ -8,17 +8,22 @@ protocol WorldLoader {
     func load() -> World
 }
 
-struct JsonCountry: Decodable {
+struct JsonWorld: Codable {
+    let age: Int
+    let continents: [JsonContinent]
+}
+
+struct JsonCountry: Codable {
     let name: String
 }
 
-struct JsonTerritory: Decodable {
+struct JsonTerritory: Codable {
     let name: String
     let population: Int
     let belongsTo: JsonCountry
 }
 
-struct JsonContinent: Decodable {
+struct JsonContinent: Codable {
     let name: String
     let territories: [JsonTerritory]
 }

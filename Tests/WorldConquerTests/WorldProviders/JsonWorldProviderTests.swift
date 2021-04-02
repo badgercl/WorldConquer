@@ -7,7 +7,8 @@ final class JsonWorldProviderTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = JsonWorldProvider(path: "earth.json")
+        let testFile = Bundle(for: type(of: self)).resourcePath! + "/WorldConquer_WorldConquerTests.bundle/Contents/Resources/test_world.json"
+        sut = JsonWorldProvider(path: testFile)
     }
 
     override func tearDown() {
