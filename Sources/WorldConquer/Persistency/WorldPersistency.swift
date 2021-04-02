@@ -6,7 +6,7 @@ public protocol WorldPersistency {
 }
 
 public struct SingleFileWorldPersistency: WorldPersistency {
-    private static let savePath = "intermediateSaves"
+    private static let savePath = "\(FileManager.default.currentDirectoryPath)/intermediateSaves"
     private static let saveFile = "\(Self.savePath)/savedStep.json"
     private let jsonWorldProvider: JsonWorldProvider
     public init(jsonWorldProvider: JsonWorldProvider) {
@@ -15,18 +15,18 @@ public struct SingleFileWorldPersistency: WorldPersistency {
     
     public func load(from worldFilePath: String?) -> World? {
         print("Current dir: \(FileManager.default.currentDirectoryPath)")
+        print("File dir: \(Self.saveFile)")
+
+
         if let worldFilePath = worldFilePath {
-            return load(path: worldFilePath)
+            print("worldFilePath dir: \(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
+            return jsonWorldProvider.generate(from: "\(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
         } else {
             guard FileManager.default.fileExists(atPath: Self.saveFile) else {
                 return nil
             }
             return jsonWorldProvider.generate(from: Self.saveFile)
         }
-    }
-
-    private func load(path: String) -> World? {
-        nil
     }
 
     public func save(world: World) {
@@ -46,6 +46,8 @@ public struct SingleFileWorldPersistency: WorldPersistency {
         }
         let jsonWorld = JsonWorld(age: world.age.description, continents: jsonContinents)
         let data = try! JSONEncoder().encode(jsonWorld)
-        try! data.write(to: URL(string: Self.savePath)!)
+        print("Saving to \(Self.saveFile)")
+        let url = URL(fileURLWithPath: Self.saveFile, isDirectory: false)
+        try! data.write(to: url)
     }
 }

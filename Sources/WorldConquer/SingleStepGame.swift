@@ -12,6 +12,7 @@ public final class SingleStepGame: Game {
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
         viewsManager = ViewsManager(views: views)
+        print("worldFilePath: \(worldFilePath)")
         guard let world = persistency.load(from: worldFilePath) else {
             throw GameError.invalidFile
         }
