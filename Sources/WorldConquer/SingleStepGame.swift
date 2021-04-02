@@ -12,7 +12,6 @@ public final class SingleStepGame: Game {
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
         viewsManager = ViewsManager(views: views)
-        print("worldFilePath: \(worldFilePath)")
         guard let world = persistency.load(from: worldFilePath) else {
             throw GameError.invalidFile
         }
@@ -25,15 +24,18 @@ public final class SingleStepGame: Game {
     public func start() {
         viewsManager.render(.start(engine.currentWorld))
         do {
+            if engine.winner != nil {
+                print("game already ended")
+                exit(0)
+            }
+
             let stepState = try engine.step()
             viewsManager.render(.step(stepState))
 
             if let winner = engine.winner {
                 viewsManager.render(.winner(winner))
-                exit(0)
-            } else {
-                persistency.save(world: engine.currentWorld)
             }
+            persistency.save(world: engine.currentWorld)
         } catch {
             viewsManager.render(.error)
             exit(2)

@@ -14,10 +14,6 @@ public struct SingleFileWorldPersistency: WorldPersistency {
     }
     
     public func load(from worldFilePath: String?) -> World? {
-        print("Current dir: \(FileManager.default.currentDirectoryPath)")
-        print("File dir: \(Self.saveFile)")
-
-
         if let worldFilePath = worldFilePath {
             print("worldFilePath dir: \(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
             return jsonWorldProvider.generate(from: "\(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
@@ -46,7 +42,6 @@ public struct SingleFileWorldPersistency: WorldPersistency {
         }
         let jsonWorld = JsonWorld(age: world.age.description, continents: jsonContinents)
         let data = try! JSONEncoder().encode(jsonWorld)
-        print("Saving to \(Self.saveFile)")
         let url = URL(fileURLWithPath: Self.saveFile, isDirectory: false)
         try! data.write(to: url)
     }
