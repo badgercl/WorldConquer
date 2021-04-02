@@ -1,13 +1,8 @@
 import Foundation
 
-public struct JsonWorldProvider: WorldProvider {
-    private let path: String
-
-    public init(path: String) {
-        self.path = path
-    }
-    
-    public func generate() -> World {
+public struct JsonWorldProvider {
+    public init() {}
+    public func generate(from path: String) -> World {
         let data = try! String(contentsOfFile: path).data(using: .utf8)
         let jsonDecoder = JSONDecoder()
         let jsonWorld = try! jsonDecoder.decode(JsonWorld.self, from: data!)

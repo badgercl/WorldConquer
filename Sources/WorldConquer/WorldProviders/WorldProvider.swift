@@ -9,7 +9,7 @@ protocol WorldLoader {
 }
 
 struct JsonWorld: Codable {
-    let age: Int
+    let age: String
     let continents: [JsonContinent]
 }
 

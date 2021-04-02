@@ -1,13 +1,6 @@
-//
-//  File.swift
-//  
-//
-//  Created by Alfredo Cadiz on 24.05.20.
-//
-
 import Foundation
 
-public protocol Age {
+public protocol Age: Codable {
     func nextAge() -> Age
     var description: String { get }
 }
@@ -17,6 +10,14 @@ struct LinearAge: Age {
 
     public init(age: Int = 0) {
         self.age = age
+    }
+
+    public init(age: String) {
+        if let intAge = Int(age) {
+            self.age = intAge
+        } else {
+            self.age = 0
+        }
     }
 
     public func nextAge() -> Age {

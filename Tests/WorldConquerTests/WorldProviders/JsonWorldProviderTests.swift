@@ -7,8 +7,7 @@ final class JsonWorldProviderTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let testFile = Bundle(for: type(of: self)).resourcePath! + "/WorldConquer_WorldConquerTests.bundle/Contents/Resources/test_world.json"
-        sut = JsonWorldProvider(path: testFile)
+        sut = JsonWorldProvider()
     }
 
     override func tearDown() {
@@ -21,7 +20,8 @@ final class JsonWorldProviderTests: XCTestCase {
     ]
 
     func testLoadingSucceeds() {
-        let result = sut.generate()
+        let testFile = Bundle(for: type(of: self)).resourcePath! + "/WorldConquer_WorldConquerTests.bundle/Contents/Resources/test_world.json"
+        let result = sut.generate(from: testFile)
         XCTAssertNotNil(result)
     }
 }

@@ -3,8 +3,8 @@ import Foundation
 import WorldConquer
 
 struct WorldConquerApp: ParsableCommand {
-    @Option(name:   [.short, .customLong("json")], help: "A JSON file describing the games' world")
-    var jsonPath: String
+    @Option(name: [.short, .customLong("json")], help: "A JSON file describing the games' world")
+    var jsonPath: String?
 
     @Option(name: .shortAndLong, default: 1, help: "Seconds between every step")
     var stepTime: Int
@@ -19,7 +19,7 @@ struct WorldConquerApp: ParsableCommand {
     }
 
     func run() throws {
-        let worldProvider = JsonWorldProvider(path: jsonPath)
+        //let worldProvider = JsonWorldProvider(path: jsonPath)
         let closenessCalculator = ContinentBoundedClosenessCalculator()
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
@@ -35,11 +35,15 @@ struct WorldConquerApp: ParsableCommand {
 //                                 winningTerritoryCalculator: winningTerritoryCalculator,
 //                                 views: views,
 //                                 stepTime: stepTime)
-        let game = SingleStepGame(worldProvider: worldProvider,
-                                  closenessCalculator: closenessCalculator,
-                                  winningTerritoryCalculator: winningTerritoryCalculator,
-                                  views: views)
-        game.start()
+        do {
+            let game = try SingleStepGame(worldFilePath: jsonPath,
+                                      closenessCalculator: closenessCalculator,
+                                      winningTerritoryCalculator: winningTerritoryCalculator,
+                                      views: views)
+            game.start()
+        } catch {
+            print("Error initialising game")
+        }
     }
 }
 
