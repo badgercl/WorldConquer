@@ -4,6 +4,7 @@ public final class SingleStepGame: Game {
     private let engine: Engine
     private let viewsManager: ViewsManager
     private let persistency: WorldPersistency
+    private let isInitialStep: Bool
 
     public init(worldFilePath: String?,
                 closenessCalculator: ClosenessCalculator,
@@ -11,6 +12,7 @@ public final class SingleStepGame: Game {
                 views: [View],
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
+        isInitialStep = worldFilePath != nil
         viewsManager = ViewsManager(views: views)
         guard let world = persistency.load(from: worldFilePath) else {
             throw GameError.invalidFile
@@ -22,7 +24,9 @@ public final class SingleStepGame: Game {
 
 
     public func start() {
-        viewsManager.render(.start(engine.currentWorld))
+        if isInitialStep {
+            viewsManager.render(.start(engine.currentWorld))
+        }
         do {
             if engine.winner != nil {
                 print("game already ended")
