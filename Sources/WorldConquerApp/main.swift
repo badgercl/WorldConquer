@@ -24,6 +24,7 @@ struct WorldConquerApp: ParsableCommand {
 
     func run() throws {
         let logger = Logger(label: "GameLogs")
+        logger.info("Waking up on \(Date())")
         let closenessCalculator = ContinentBoundedClosenessCalculator()
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []

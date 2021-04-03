@@ -14,10 +14,16 @@ public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
         let otherTerritories = continent.territories.filter { $0.belongsTo != territory.belongsTo }
         let totalUnconquered = otherTerritories.count
         let totalConquered = continent.territories.count - totalUnconquered
-
+        logInfo("""
+        otherTerritories: \(otherTerritories)
+        totalUnconquered: \(totalUnconquered)
+        totalConquered: \(totalConquered)
+        """)
         if shouldConquerOtherContinent(totalUnconquered: totalUnconquered, totalConquered: totalConquered) {
+            logInfo("shouldConquerOtherContinent")
             return pickTerritoryFromOtherContinent(otherThan: continent, winner: territory, in: world)
         } else {
+            logInfo("pickLoosingTerritoryFrom")
             return pickLoosingTerritoryFrom(continent: continent, winnerTerritory: territory)
         }
     }

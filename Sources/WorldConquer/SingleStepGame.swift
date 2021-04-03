@@ -40,7 +40,7 @@ public final class SingleStepGame: Game {
                 logInfo("First step, creating the world")
                 viewsManager.render(.start(engine.currentWorld))
             } else {
-                logInfo("Intermediate step")
+                logInfo("Intermediate step year \(engine.currentWorld.age.description)")
                 let stepState = try engine.step()
                 viewsManager.render(.step(stepState))
 
