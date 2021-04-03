@@ -6,14 +6,17 @@ public final class SingleStepGame: Game {
     private let viewsManager: ViewsManager
     private let persistency: WorldPersistency
     private let isInitialStep: Bool
+    private let isTest: Bool
 
     public init(worldFilePath: String?,
                 closenessCalculator: ClosenessCalculator,
                 winningTerritoryCalculator: WinningTerritoryCalculator,
                 views: [View],
                 logger: Logger,
+                isTest: Bool,
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
+        self.isTest = isTest
         appLogger = logger
         isInitialStep = worldFilePath != nil
         viewsManager = ViewsManager(views: views)
@@ -42,7 +45,9 @@ public final class SingleStepGame: Game {
             if let winner = engine.winner {
                 viewsManager.render(.winner(winner))
             }
-            persistency.save(world: engine.currentWorld)
+            if !isTest {
+                persistency.save(world: engine.currentWorld)
+            }
             logInfo("Game step successfully ended")
         } catch {
             logError("Game ended with error: \(error)")

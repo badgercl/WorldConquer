@@ -13,6 +13,9 @@ struct WorldConquerApp: ParsableCommand {
     @Flag(name: [.long], help: "Show console game")
     var console: Bool
 
+    @Flag(name: [.long], help: "Step won't be saved")
+    var test: Bool
+
     func validate() throws {
         guard stepTime >= 0 else {
             throw ValidationError("StepTime must be a positive number")
@@ -36,14 +39,15 @@ struct WorldConquerApp: ParsableCommand {
         if console {
             views.append(ConsoleView())
         }
-        
+
         do {
             let game = try SingleStepGame(
                 worldFilePath: jsonPath,
                 closenessCalculator: closenessCalculator,
                 winningTerritoryCalculator: winningTerritoryCalculator,
                 views: views,
-                logger: logger)
+                logger: logger,
+                isTest: test)
             game.start()
         } catch {
             logger.critical("Error initialising game")
