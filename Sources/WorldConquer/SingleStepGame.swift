@@ -43,7 +43,9 @@ public final class SingleStepGame: Game {
                 viewsManager.render(.winner(winner))
             }
             persistency.save(world: engine.currentWorld)
+            logInfo("Game step successfully ended")
         } catch {
+            logError("Game ended with error: \(error)")
             viewsManager.render(.error)
             exit(2)
         }

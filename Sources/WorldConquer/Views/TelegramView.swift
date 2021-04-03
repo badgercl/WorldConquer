@@ -1,6 +1,7 @@
 import Foundation
 
 public struct TelegramView: View {
+    private static let maxTelegramCharCount = 4000
     private let path: String
     private let chatId: String
 
@@ -10,6 +11,7 @@ public struct TelegramView: View {
     }
 
     public func render(_ viewState: ViewState) {
+        logInfo("Telegram render: \(viewState)")
         switch viewState {
         case .start(let world):
             showStartGame(world)
@@ -54,7 +56,7 @@ public struct TelegramView: View {
     }
 
     private func sendMessage(text: String) {
-        guard text.count > 400 else {
+        guard text.count > Self.maxTelegramCharCount else {
             sendChunkMessage(text: text)
             return
         }
@@ -62,7 +64,7 @@ public struct TelegramView: View {
         text
             .split(separator: "\n")
             .forEach {
-                if chunk.count > 400 {
+                if chunk.count > Self.maxTelegramCharCount {
                     sendChunkMessage(text: chunk)
                     chunk = ""
                 }
@@ -83,23 +85,40 @@ public struct TelegramView: View {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let semaphore = DispatchSemaphore(value: 0)
         let session = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            let dataString: String
             if let error = error {
                 logError("error: \(error)")
+                return
             }
-            if let data = data {
-                dataString = String(data: data, encoding: .utf8)!
-            } else {
-                dataString = "no data"
+            guard let data = data else {
+                return logError("Telegram: No error and no data received")
             }
 
-            logInfo("data: \(dataString)")
-            logInfo("response: \(String(describing: response))")
-            logInfo("error: \(String(describing: error))")
+            let decoder = JSONDecoder()
+            guard let tgResponse = try? decoder.decode(TelegramResponse.self, from: data) else {
+                return logError("Telegram: impossible to decode response")
+            }
+
+            if tgResponse.ok {
+                logInfo("Telegram: message successfully sent")
+            } else if let tgError = try? decoder.decode(TelegramErrorResponse.self, from: data) {
+                logError("Telegram error: \(tgError)")
+            } else {
+                logError("Telegram error not available")
+            }
             semaphore.signal()
         }
         session.resume()
         semaphore.wait()
-        logInfo("tg unlocked")
     }
 }
+
+private struct TelegramResponse: Decodable {
+    let ok: Bool
+}
+
+private struct TelegramErrorResponse: Decodable {
+    let ok: Bool
+    let error_code: Int
+    let description: String
+}
+
