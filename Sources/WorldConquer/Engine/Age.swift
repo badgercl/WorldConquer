@@ -21,7 +21,7 @@ struct LinearAge: Age {
     }
 
     public func nextAge() -> Age {
-        return LinearAge(age: age + 1)
+        LinearAge(age: age + 1)
     }
 
     var description: String {

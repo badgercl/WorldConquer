@@ -13,10 +13,9 @@ struct Continent {
     }
 
     func belongsToContinent(territory: Territory) -> Bool {
-        return territories
+        territories
             .map { $0.name == territory.name }
             .reduce(false) { $0 || $1 }
-
     }
 
     var description: String {

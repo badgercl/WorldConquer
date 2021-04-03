@@ -29,7 +29,7 @@ public final class Country: Hashable {
     }
 
     public static func == (lhs: Country, rhs: Country) -> Bool {
-        return lhs.name == rhs.name && lhs.territories == rhs.territories
+        lhs.name == rhs.name && lhs.territories == rhs.territories
     }
 
     var description: String {
