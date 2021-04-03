@@ -1,6 +1,7 @@
 import ArgumentParser
 import Foundation
 import WorldConquer
+import Logging
 
 struct WorldConquerApp: ParsableCommand {
     @Option(name: [.short, .customLong("json")], help: "A JSON file describing the games' world")
@@ -19,6 +20,7 @@ struct WorldConquerApp: ParsableCommand {
     }
 
     func run() throws {
+        let logger = Logger(label: "GameLogs")
         let closenessCalculator = ContinentBoundedClosenessCalculator()
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
@@ -28,6 +30,7 @@ struct WorldConquerApp: ParsableCommand {
             let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
             let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) {
             views.append(TelegramView(token: telegramConfig.token, chatId: telegramConfig.chat_id))
+            logger.info("Telegram enabled")
         }
 
         if verbose {
@@ -43,10 +46,11 @@ struct WorldConquerApp: ParsableCommand {
             let game = try SingleStepGame(worldFilePath: jsonPath,
                                       closenessCalculator: closenessCalculator,
                                       winningTerritoryCalculator: winningTerritoryCalculator,
-                                      views: views)
+                                      views: views,
+                                      logger: logger)
             game.start()
         } catch {
-            print("Error initialising game")
+            logger.critical("Error initialising game")
         }
     }
 }

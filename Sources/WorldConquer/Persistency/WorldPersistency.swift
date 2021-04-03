@@ -15,7 +15,7 @@ public struct SingleFileWorldPersistency: WorldPersistency {
     
     public func load(from worldFilePath: String?) -> World? {
         if let worldFilePath = worldFilePath {
-            print("worldFilePath dir: \(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
+            logInfo("worldFilePath dir: \(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
             return jsonWorldProvider.generate(from: "\(FileManager.default.currentDirectoryPath)/\(worldFilePath)")
         } else {
             guard FileManager.default.fileExists(atPath: Self.saveFile) else {

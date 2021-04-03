@@ -1,5 +1,4 @@
 import Foundation
-import Logging
 
 public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
     private let correctionFactor = 0.5

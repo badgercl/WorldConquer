@@ -75,7 +75,7 @@ final class EngineTests: XCTestCase {
         closenessCalculator.getCloseTerritoryReturnValue = conqueredTerritory
 
         // When
-        try! sut.step()
+        _ = try! sut.step()
         let winner = sut.winner
         
         // Then
@@ -92,19 +92,19 @@ final class EngineTests: XCTestCase {
 
         // C2 conquers T1
         closenessCalculator.getCloseTerritoryReturnValue = territory1
-        try! sut.step()
+        _ = try! sut.step()
 
         // C2 conquers T2
         closenessCalculator.getCloseTerritoryReturnValue = territory2
-        try! sut.step()
+        _ = try! sut.step()
 
         // C2 conquers T4
         closenessCalculator.getCloseTerritoryReturnValue = territory4
 
         // When
-        try! sut.step()
+        _ = try! sut.step()
         let winner = sut.winner
-        print(sut.currentWorld.description)
+        logInfo(sut.currentWorld.description)
 
         // Then
         XCTAssertEqual(winner, country3)

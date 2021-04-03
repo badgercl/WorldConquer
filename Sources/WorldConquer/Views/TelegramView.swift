@@ -81,19 +81,25 @@ public struct TelegramView: View {
         urlRequest.httpMethod = "POST"
         urlRequest.httpBody = data
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        let semaphore = DispatchSemaphore(value: 0)
         let session = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             let dataString: String
+            if let error = error {
+                logError("error: \(error)")
+            }
             if let data = data {
                 dataString = String(data: data, encoding: .utf8)!
             } else {
                 dataString = "no data"
             }
 
-            print("data: \(dataString)")
-            print("response: \(String(describing: response))")
-            print("error: \(String(describing: error))")
+            logInfo("data: \(dataString)")
+            logInfo("response: \(String(describing: response))")
+            logInfo("error: \(String(describing: error))")
+            semaphore.signal()
         }
         session.resume()
+        semaphore.wait()
+        logInfo("tg unlocked")
     }
 }

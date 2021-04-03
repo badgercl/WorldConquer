@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 
 public final class SingleStepGame: Game {
     private let engine: Engine
@@ -10,8 +11,10 @@ public final class SingleStepGame: Game {
                 closenessCalculator: ClosenessCalculator,
                 winningTerritoryCalculator: WinningTerritoryCalculator,
                 views: [View],
+                logger: Logger,
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
+        appLogger = logger
         isInitialStep = worldFilePath != nil
         viewsManager = ViewsManager(views: views)
         guard let world = persistency.load(from: worldFilePath) else {
@@ -29,7 +32,7 @@ public final class SingleStepGame: Game {
         }
         do {
             if engine.winner != nil {
-                print("game already ended")
+                logInfo("Game already ended, nothing to do")
                 exit(0)
             }
 

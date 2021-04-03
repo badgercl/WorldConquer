@@ -5,7 +5,7 @@ public struct ConsoleView: View {
     private let logger: Logger
 
     public init() {
-        logger = Logger(label: "WorldConquer")
+        logger = Logger(label: "WorldConquerConsoleView")
     }
 
     public func render(_ viewState: ViewState) {
