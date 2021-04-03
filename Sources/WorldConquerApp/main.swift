@@ -10,8 +10,8 @@ struct WorldConquerApp: ParsableCommand {
     @Option(name: .shortAndLong, default: 1, help: "Seconds between every step")
     var stepTime: Int
 
-    @Flag(name: [.long], help: "Show console logs")
-    var verbose: Bool
+    @Flag(name: [.long], help: "Show console game")
+    var console: Bool
 
     func validate() throws {
         guard stepTime >= 0 else {
@@ -33,21 +33,17 @@ struct WorldConquerApp: ParsableCommand {
             logger.info("Telegram enabled")
         }
 
-        if verbose {
+        if console {
             views.append(ConsoleView())
         }
-
-//        let game = MultiStepGame(worldProvider: worldProvider,
-//                                 closenessCalculator: closenessCalculator,
-//                                 winningTerritoryCalculator: winningTerritoryCalculator,
-//                                 views: views,
-//                                 stepTime: stepTime)
+        
         do {
-            let game = try SingleStepGame(worldFilePath: jsonPath,
-                                      closenessCalculator: closenessCalculator,
-                                      winningTerritoryCalculator: winningTerritoryCalculator,
-                                      views: views,
-                                      logger: logger)
+            let game = try SingleStepGame(
+                worldFilePath: jsonPath,
+                closenessCalculator: closenessCalculator,
+                winningTerritoryCalculator: winningTerritoryCalculator,
+                views: views,
+                logger: logger)
             game.start()
         } catch {
             logger.critical("Error initialising game")
