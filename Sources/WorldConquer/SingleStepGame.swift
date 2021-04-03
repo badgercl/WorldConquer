@@ -30,24 +30,29 @@ public final class SingleStepGame: Game {
 
 
     public func start() {
-        if isInitialStep {
-            viewsManager.render(.start(engine.currentWorld))
-        }
         do {
             if engine.winner != nil {
                 logInfo("Game already ended, nothing to do")
                 exit(0)
             }
 
-            let stepState = try engine.step()
-            viewsManager.render(.step(stepState))
+            if isInitialStep {
+                logInfo("First step, creating the world")
+                viewsManager.render(.start(engine.currentWorld))
+            } else {
+                logInfo("Intermediate step")
+                let stepState = try engine.step()
+                viewsManager.render(.step(stepState))
 
-            if let winner = engine.winner {
-                viewsManager.render(.winner(winner))
+                if let winner = engine.winner {
+                    viewsManager.render(.winner(winner))
+                }
             }
+
             if !isTest {
                 persistency.save(world: engine.currentWorld)
             }
+
             logInfo("Game step successfully ended")
         } catch {
             logError("Game ended with error: \(error)")
