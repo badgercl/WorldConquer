@@ -19,12 +19,16 @@ struct WorldConquerApp: ParsableCommand {
     }
 
     func run() throws {
-        //let worldProvider = JsonWorldProvider(path: jsonPath)
         let closenessCalculator = ContinentBoundedClosenessCalculator()
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
 
-        views.append(TelegramView(token: "690106940:AAH4kLH6o8OsDS1gKRkEkjzIGehLBgtyBzU", chatId: "7372677"))
+        let telegramConfigPath = "\(FileManager.default.currentDirectoryPath)/.telegram"
+        if
+            let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
+            let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) {
+            views.append(TelegramView(token: telegramConfig.token, chatId: telegramConfig.chat_id))
+        }
 
         if verbose {
             views.append(ConsoleView())
