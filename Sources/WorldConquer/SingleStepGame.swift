@@ -53,6 +53,8 @@ public final class SingleStepGame: Game {
                 persistency.save(world: engine.currentWorld)
             }
 
+            GraphvizExporter().export(world: engine.currentWorld, name: "current")
+
             logInfo("Game step successfully ended")
         } catch {
             logError("Game ended with error: \(error)")
