@@ -49,7 +49,7 @@ public struct TelegramView: View {
                 return " - *\($0.name)* (\($0.territories.count)): [\(territories)]"
             }
             .joined(separator: "\n")
-        let text = "In year \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.territory.name)* which was previously occupied by *\(stepState.looser.name)*\nWorld Status for countries with more than 1 territory:\n\(worldStatus)"
+        let text = "In year \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.territory.name)* which was previously occupied by *\(stepState.looser.name)*\n\nTop 10 empires:\n\(worldStatus)"
         sendMessage(text: text)
     }
 
