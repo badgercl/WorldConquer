@@ -45,7 +45,7 @@ struct GraphvizExporter {
                     .map(\.name)
                     .map { $0.replacingOccurrences(of: "\"", with: "") }
                     .reduce("") { previous, territoryName in
-                        "\(previous)\"\(country.name)\"->\"\(territoryName)\" [fillcolor=\"#a6cee3\" color=\"#1f78b4\"];\n"
+                        "\(previous)\"\(country.name.replacingOccurrences(of: "\"", with: ""))\"->\"\(territoryName)\" [fillcolor=\"#a6cee3\" color=\"#1f78b4\"];\n"
                     }
             }
         .joined()
