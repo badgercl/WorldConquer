@@ -29,19 +29,23 @@ struct WorldConquerApp: ParsableCommand {
         let winningTerritoryCalculator = RandomWinningTerritoryCalculator()
         var views: [View] = []
 
-        let telegramConfigPath = "\(FileManager.default.currentDirectoryPath)/.telegram"
-        if
-            let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
-            let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) {
-            views.append(TelegramView(token: telegramConfig.token, chatId: telegramConfig.chat_id))
-            logger.info("Telegram enabled")
-        }
-
-        if console {
-            views.append(ConsoleView())
-        }
-
         do {
+            let localizer: Localizer = try LocalizerImpl(locale: "en", path: "Resources/translations")
+            let telegramConfigPath = "\(FileManager.default.currentDirectoryPath)/.telegram"
+            if
+                let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
+                let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) {
+                views.append(TelegramView(
+                                token: telegramConfig.token,
+                                chatId: telegramConfig.chat_id,
+                                localizer: localizer))
+                logger.info("Telegram enabled")
+            }
+
+            if console {
+                views.append(ConsoleView(localizer: localizer))
+            }
+
             let game = try SingleStepGame(
                 worldFilePath: jsonPath,
                 closenessCalculator: closenessCalculator,
@@ -51,7 +55,7 @@ struct WorldConquerApp: ParsableCommand {
                 isTest: test)
             game.start()
         } catch {
-            logger.critical("Error initialising game")
+            logger.critical("Error initialising game: \(error)")
         }
     }
 }

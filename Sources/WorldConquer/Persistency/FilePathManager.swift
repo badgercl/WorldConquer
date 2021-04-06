@@ -7,7 +7,15 @@ public struct FilePathManager {
         self.baseFolder = baseFolder
     }
 
-    func folderFor(_ label: String) -> String {
+    func getFolder(for label: String) -> String? {
+        let folder = "\(baseFolder)/\(label)"
+        guard FileManager.default.fileExists(atPath: folder) else {
+            return nil
+        }
+        return folder
+    }
+
+    func getOrCreateFolderFor(_ label: String) -> String {
         let folder = "\(baseFolder)/\(label)"
         if !FileManager.default.fileExists(atPath: folder) {
             logInfo("Creating \(folder)")

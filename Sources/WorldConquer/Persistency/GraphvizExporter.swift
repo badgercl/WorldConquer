@@ -9,7 +9,7 @@ struct GraphvizExporter {
         styleGenerator: StyleGenerator = StyleGenerator()
     ) {
         self.styleGenerator = styleGenerator
-        self.path = "\(filePathManager.folderFor("grapviz"))"
+        self.path = "\(filePathManager.getOrCreateFolderFor("grapviz"))"
     }
 
     func export(world: World, name: String) {

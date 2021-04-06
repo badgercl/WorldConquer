@@ -3,8 +3,10 @@ import Logging
 
 public struct ConsoleView: View {
     private let logger: Logger
+    private let localizer: Localizer
 
-    public init() {
+    public init(localizer: Localizer) {
+        self.localizer = localizer
         logger = Logger(label: "WorldConquerConsoleView")
     }
 
@@ -22,22 +24,36 @@ public struct ConsoleView: View {
     }
 
     private func showStartGame(_ world: World) {
-        logger.info("Game started with World:\n\(world.description)")
+        display(localizer.localize(keyPath: \.gameStarted, withReplacements: ["initial-world": world.description]))
     }
 
     private func showWorldState(_ stepState: StepState) {
-        var text = "[Year \(stepState.world.age.description)] \(stepState.winner.name) conquered \(stepState.territory.name) previosly occupied by \(stepState.looser.name)."
+        var text = localizer.localize(
+            keyPath: \.gameStepConquer,
+            withReplacements: [
+                "world-age": stepState.world.age.description,
+                "winner-country": stepState.winner.name,
+                "taken-territory": stepState.territory.name,
+                "loser-country": stepState.looser.name
+            ])
+
         if stepState.looser.isDefeated {
-            text += " \(stepState.looser.name) has been completely defeated."
+            text += " \(localizer.localize(keyPath: \.gameStepDefeated, withReplacements: ["loser-country": stepState.looser.name]))"
         }
-        logger.info(Logger.Message(stringLiteral: text))
+        display(text)
     }
 
     private func showWinner(_ winner: Country) {
-        logger.info("Game ended with winning country: \(winner.name)")
+        display(localizer.localize(keyPath: \.gameEndedWinner, withReplacements: ["winner-country": winner.name]))
     }
 
     private func showError() {
-        logger.error("We've found an unexpected error and the game has been cancelled")
+        let text = localizer.localize(keyPath: \.gameError)
+        logger.error(Logger.Message(stringLiteral: text))
+    }
+    
+
+    private func display(_ text: String) {
+        logger.info(Logger.Message(stringLiteral: text))
     }
 }

@@ -15,7 +15,7 @@ public struct SingleFileWorldPersistency: WorldPersistency {
         filePathManager: FilePathManager = FilePathManager()
     ) {
         self.jsonWorldProvider = jsonWorldProvider
-        savePath = filePathManager.folderFor("intermediateSaves")
+        savePath = filePathManager.getOrCreateFolderFor("intermediateSaves")
         saveFile = "\(savePath)/savedStep.json"
     }
     

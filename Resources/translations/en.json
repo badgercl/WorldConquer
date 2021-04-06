@@ -1,0 +1,8 @@
+{
+    "game_started": "Game started. Initial World:\n\n%{initial-world}",
+    "game_step_conquer": "In year %{world-age}, *%{winner-country}* conquered *%{taken-territory}* which was previously occupied by *%{loser-country}*.",
+    "game_step_top": "Top %{top-number} empires:\n%{top-countries}.",
+    "game_step_defeated": "*%{loser-country}* has been completely defeated.",
+    "game_ended_winner": "*%{winner-country}* has conquered the world!",
+    "game_error": "An error occured, please ask the administrator for support."
+}
