@@ -26,7 +26,11 @@ public struct ConsoleView: View {
     }
 
     private func showWorldState(_ stepState: StepState) {
-        logger.info("[Year \(stepState.world.age.description)] \(stepState.winner.name) conquered \(stepState.territory.name) previosly occupied by \(stepState.looser.name)")
+        var text = "[Year \(stepState.world.age.description)] \(stepState.winner.name) conquered \(stepState.territory.name) previosly occupied by \(stepState.looser.name)."
+        if stepState.looser.isDefeated {
+            text += " \(stepState.looser.name) has been completely defeated."
+        }
+        logger.info(Logger.Message(stringLiteral: text))
     }
 
     private func showWinner(_ winner: Country) {

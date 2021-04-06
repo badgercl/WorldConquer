@@ -20,21 +20,26 @@ final class CountryTests: XCTestCase {
     }
 
     static var allTests = [
+        ("testisDefeatedFalse", testIsDefeatedFalse),
+        ("testisDefeatedTrue", testIsDefeatedTrue),
         ("testAdd", testAdd),
-        ("testRemove", testRemove),
         ("testConquerAnotherTerritoryWorks", testConquerAnotherTerritoryWorks),
         ("testConquerAlreadyOwnedTerritoryDoesNothing", testConquerAlreadyOwnedTerritoryDoesNothing)
     ]
 
+    func testIsDefeatedFalse() {
+        XCTAssertEqual(sut.isDefeated, false)
+    }
+
+    func testIsDefeatedTrue() {
+        let conqueringCountry = Country(name:  "")
+        conqueringCountry.conquer(territory: territory)
+        XCTAssertEqual(sut.isDefeated, true)
+    }
+
     func testAdd() {
         sut.add(territory: territory)
         XCTAssert(sut.territories.contains(territory))
-    }
-
-    func testRemove() {
-        sut.add(territory: territory)
-        sut.remove(territory: territory)
-        XCTAssert(!sut.territories.contains(territory))
     }
 
     func testConquerAnotherTerritoryWorks() {

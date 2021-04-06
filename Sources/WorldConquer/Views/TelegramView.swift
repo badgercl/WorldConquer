@@ -49,7 +49,10 @@ public struct TelegramView: View {
                 return " - *\($0.name)* (\($0.territories.count)): [\(territories)]"
             }
             .joined(separator: "\n")
-        let text = "In year \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.territory.name)* which was previously occupied by *\(stepState.looser.name)*\n\nTop 10 empires:\n\(worldStatus)"
+        var text = "In year \(stepState.world.age.description), *\(stepState.winner.name)* conquered *\(stepState.territory.name)* which was previously occupied by *\(stepState.looser.name)*\n\nTop 10 empires:\n\(worldStatus)."
+        if stepState.looser.isDefeated {
+            text += " \(stepState.looser.name) has been completely defeated."
+        }
         sendMessage(text: text)
     }
 
