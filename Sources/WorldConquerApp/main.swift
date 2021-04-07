@@ -30,10 +30,12 @@ struct WorldConquerApp: ParsableCommand {
         var views: [View] = []
 
         do {
-            let localizer: Localizer = try LocalizerImpl(locale: "en", path: "Resources/translations")
-            let telegramConfigPath = "\(FileManager.default.currentDirectoryPath)/.telegram"
+            let config = ConfigurationProvider.loadConfiguration()
+            let localizer: Localizer = try configureLocalizer(localizationConfig: config?.localization)
 
-            if let telegramView = configureTelegram(telegramConfigPath: telegramConfigPath, localizer: localizer) {
+            if let telegramView = configureTelegram(
+                telegramConfig: config?.telegram,
+                localizer: localizer) {
                 views.append(telegramView)
                 logger.info("Telegram enabled")
             }
@@ -56,10 +58,21 @@ struct WorldConquerApp: ParsableCommand {
         }
     }
 
-    private func configureTelegram(telegramConfigPath: String, localizer: Localizer) -> TelegramView? {
-        guard
-            let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
-            let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) else {
+    private func configureLocalizer(localizationConfig: LocalizationConfig?) throws -> Localizer {
+        var locale: String = "en"
+        var path: String = "Resources/translations"
+        if let localizationConfig = localizationConfig {
+            locale = localizationConfig.locale
+            path = localizationConfig.path
+        }
+
+        return try LocalizerImpl(
+            locale: locale,
+            path: path)
+    }
+
+    private func configureTelegram(telegramConfig: TelegramConfig?, localizer: Localizer) -> TelegramView? {
+        guard let telegramConfig = telegramConfig else {
             return nil
         }
         return TelegramView(
