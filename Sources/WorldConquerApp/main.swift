@@ -31,7 +31,9 @@ struct WorldConquerApp: ParsableCommand {
 
         do {
             let config = ConfigurationProvider.loadConfiguration()
-            let localizer: Localizer = try configureLocalizer(localizationConfig: config?.localization)
+            let localizer: Localizer = try configureLocalizer(
+                localizationConfig: config?.localization,
+                logger: logger)
 
             if let telegramView = configureTelegram(
                 telegramConfig: config?.telegram,
@@ -58,7 +60,7 @@ struct WorldConquerApp: ParsableCommand {
         }
     }
 
-    private func configureLocalizer(localizationConfig: LocalizationConfig?) throws -> Localizer {
+    private func configureLocalizer(localizationConfig: LocalizationConfig?, logger: Logger) throws -> Localizer {
         var locale: String = "en"
         var path: String = "Resources/translations"
         if let localizationConfig = localizationConfig {
@@ -66,6 +68,7 @@ struct WorldConquerApp: ParsableCommand {
             path = localizationConfig.path
         }
 
+        logger.info("Initialising localizer with locale: \(locale) from \(path)")
         return try LocalizerImpl(
             locale: locale,
             path: path)
