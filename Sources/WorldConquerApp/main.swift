@@ -32,13 +32,9 @@ struct WorldConquerApp: ParsableCommand {
         do {
             let localizer: Localizer = try LocalizerImpl(locale: "en", path: "Resources/translations")
             let telegramConfigPath = "\(FileManager.default.currentDirectoryPath)/.telegram"
-            if
-                let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
-                let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) {
-                views.append(TelegramView(
-                                token: telegramConfig.token,
-                                chatId: telegramConfig.chat_id,
-                                localizer: localizer))
+
+            if let telegramView = configureTelegram(telegramConfigPath: telegramConfigPath, localizer: localizer) {
+                views.append(telegramView)
                 logger.info("Telegram enabled")
             }
 
@@ -54,9 +50,22 @@ struct WorldConquerApp: ParsableCommand {
                 logger: logger,
                 isTest: test)
             game.start()
+
         } catch {
             logger.critical("Error initialising game: \(error)")
         }
+    }
+
+    private func configureTelegram(telegramConfigPath: String, localizer: Localizer) -> TelegramView? {
+        guard
+            let telegramConfigData = try? Data(contentsOf: URL(fileURLWithPath: telegramConfigPath)),
+            let telegramConfig = try? JSONDecoder().decode(TelegramConfig.self, from: telegramConfigData) else {
+            return nil
+        }
+        return TelegramView(
+            token: telegramConfig.token,
+            chatId: telegramConfig.chat_id,
+            localizer: localizer)
     }
 }
 
