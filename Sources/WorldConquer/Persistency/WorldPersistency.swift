@@ -12,10 +12,11 @@ public struct SingleFileWorldPersistency: WorldPersistency {
 
     public init(
         jsonWorldProvider: JsonWorldProvider,
+        label: String = "intermediateSaves",
         filePathManager: FilePathManager = FilePathManager()
     ) {
         self.jsonWorldProvider = jsonWorldProvider
-        savePath = filePathManager.getOrCreateFolderFor("intermediateSaves")
+        savePath = filePathManager.getOrCreateFolderFor(label)
         saveFile = "\(savePath)/savedStep.json"
     }
     
@@ -48,7 +49,15 @@ public struct SingleFileWorldPersistency: WorldPersistency {
         }
         let jsonWorld = JsonWorld(age: world.age.description, continents: jsonContinents)
         let data = try! JSONEncoder().encode(jsonWorld)
-        let url = URL(fileURLWithPath: saveFile, isDirectory: false)
-        try! data.write(to: url)
+        let datePathFile = "\(savePath)/\(Date().formatedDateForFile).json"
+
+        try! save(path: datePathFile, data: data) // history
+        try! save(path: saveFile, data: data) // current step save
+    }
+
+    private func save(path: String, data: Data) throws {
+        logInfo("Saving world to \(path)")
+        let url = URL(fileURLWithPath: path, isDirectory: false)
+        try data.write(to: url)
     }
 }
