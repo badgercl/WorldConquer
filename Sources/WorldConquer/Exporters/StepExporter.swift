@@ -19,7 +19,6 @@ struct StepExporter {
             }
             .joined(separator: "\n")
         data = "\(data)\n\(topCountries)"
-        logInfo(data)
         _ = try! data.write(toFile: path, atomically: true, encoding: .utf8)
     }
 }
