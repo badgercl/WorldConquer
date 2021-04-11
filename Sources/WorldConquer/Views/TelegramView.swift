@@ -7,12 +7,10 @@ public struct TelegramView: View {
     private static let maxTelegramCharCount = 4000
     private let path: String
     private let chatId: String
-    private let localizer: Localizer
 
-    public init(token: String, chatId: String, localizer: Localizer) {
+    public init(token: String, chatId: String) {
         path = "https://api.telegram.org/bot\(token)/sendMessage"
         self.chatId = chatId
-        self.localizer = localizer
     }
 
     public func render(_ viewState: ViewState) {
@@ -29,58 +27,31 @@ public struct TelegramView: View {
         }
     }
 
-    private func showError() {
-        sendMessage(text: localizer.localize(keyPath: \.gameError))
-    }
+    private func showStartGame(_ viewState: StartViewState) {
+        let text =  """
+        \(viewState.header) \(viewState.body)
 
-    private func showStartGame(_ world: World) {
-        let worldStatus: String = world.continents.map { "- *\($0.name) (#\($0.countries.count))*: [\($0.countries.map(\.name).joined(separator: ", "))]" }.joined(separator: "\n")
-        let text = "Game started. Initial World:\n\n\(worldStatus)"
+        \(viewState.worldDescription)
+        """
         sendMessage(text: text)
     }
 
-    private func showStepState(_ stepState: StepState) {
-        let topNumber = 10
-        let worldStatus: String = stepState
-            .world
-            .countries
-            .sorted { $0.territories.count > $1.territories.count }
-            .filter { $0.territories.count > 1 }
-            .prefix(topNumber)
-            .map {
-                let territories = $0.territories.map(\.name).joined(separator: ", ")
-                return " - *\($0.name)* (\($0.territories.count)): [\(territories)]"
-            }
-            .joined(separator: "\n")
-        let stepConquer = localizer.localize(
-            keyPath: \.gameStepConquer,
-            withReplacements: [
-                "world-age": stepState.world.age.description,
-                "winner-country": stepState.winner.name,
-                "taken-territory": stepState.territory.name,
-                "loser-country": stepState.looser.name
-            ])
-
-        var defeated: String = ""
-        if stepState.looser.isDefeated {
-            defeated = localizer.localize(
-                keyPath: \.gameStepDefeated,
-                withReplacements: ["loser-country": stepState.looser.name])
+    private func showStepState(_ viewState: StepViewState) {
+        var text = viewState.conquer
+        if let defeated = viewState.defeated {
+            text += " \(defeated)"
         }
 
-        let topEmpires = localizer.localize(
-            keyPath: \.gameStepTop ,
-            withReplacements: [
-                "top-number": String(topNumber),
-                "top-countries": worldStatus
-            ])
+        text += "\n\n\(viewState.topEmpires)"
 
-        sendMessage(text: "\(stepConquer) \(defeated)\n\n\(topEmpires)")
+        if let moreInfo = viewState.moreInfo {
+            text += "\n\n\(moreInfo)"
+        }
+        sendMessage(text: text)
     }
 
-    private func showWinner(_ winner: Country) {
-        let text = "\(winner.name) has conquered the world!"
-        sendMessage(text: text)
+    private func showWinner(_ viewState: WinnerViewState) {
+        sendMessage(text: viewState.gameEndMessage)
     }
 
     private func sendMessage(text: String) {

@@ -4,6 +4,7 @@ import Logging
 public final class MultiStepGame: Game {
     private let engine: Engine
     private let viewsManager: ViewsManager
+    private let gameViewStateMapper: GameViewStateMapper
     private let stepTime: UInt32
     
     public init(worldFilePath: String?,
@@ -12,7 +13,9 @@ public final class MultiStepGame: Game {
                 views: [View],
                 logger: Logger?,
                 stepTime: Int,
+                gameViewStateMapper: GameViewStateMapper,
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
+        self.gameViewStateMapper = gameViewStateMapper
         guard let world = persistency.load(from: worldFilePath) else {
             throw GameError.invalidFile
         }
@@ -27,19 +30,19 @@ public final class MultiStepGame: Game {
     }
     
     public func start() {
-        viewsManager.render(.start(engine.currentWorld))
+        viewsManager.render(gameViewStateMapper.toStartState(world: engine.currentWorld))
         while true {
             do {
                 let stepState = try engine.step()
-                viewsManager.render(.step(stepState))
+                viewsManager.render(gameViewStateMapper.toStepState(from: stepState))
 
                 if let winner = engine.winner {
-                    viewsManager.render(.winner(winner))
+                    viewsManager.render(gameViewStateMapper.toWinnerState(winner))
                     sleep(2)
                     exit(0)
                 }
             } catch {
-                viewsManager.render(.error)
+                viewsManager.render(gameViewStateMapper.toErrorState())
                 exit(2)
             }
             sleep(stepTime)

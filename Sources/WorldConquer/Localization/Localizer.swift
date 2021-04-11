@@ -48,18 +48,22 @@ public struct LocalizerImpl: Localizer {
 }
 
 public struct LocalizationData: Decodable {
-    let gameStarted: String
+    let gameStartedHeader: String
+    let gameStartedBody: String
     let gameStepConquer: String
     let gameStepTop: String
     let gameStepDefeated: String
+    let gameStepMoreInfo: String
     let gameEndedWinner: String
     let gameError: String
 
     enum CodingKeys: String, CodingKey {
-        case gameStarted = "game_started"
+        case gameStartedHeader = "game_started_header"
+        case gameStartedBody = "game_started_body"
         case gameStepConquer = "game_step_conquer"
         case gameStepTop = "game_step_top"
         case gameStepDefeated = "game_step_defeated"
+        case gameStepMoreInfo = "game_step_more_info"
         case gameEndedWinner = "game_ended_winner"
         case gameError = "game_error"
     }

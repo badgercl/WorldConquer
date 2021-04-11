@@ -3,10 +3,8 @@ import Logging
 
 public struct ConsoleView: View {
     private let logger: Logger
-    private let localizer: Localizer
 
-    public init(localizer: Localizer) {
-        self.localizer = localizer
+    public init() {
         logger = Logger(label: "WorldConquerConsoleView")
     }
 
@@ -18,40 +16,31 @@ public struct ConsoleView: View {
             showWorldState(stepViewState)
         case .winner(let winner):
             showWinner(winner)
-        case .error:
-            showError()
+        case .error(let error):
+            showError(error)
         }
     }
 
-    private func showStartGame(_ world: World) {
-        display(localizer.localize(keyPath: \.gameStarted, withReplacements: ["initial-world": world.description]))
+    private func showStartGame(_ viewState: StartViewState) {
+        display("\(viewState.header) \(viewState.body)\n\n\(viewState.worldDescription)")
     }
 
-    private func showWorldState(_ stepState: StepState) {
-        var text = localizer.localize(
-            keyPath: \.gameStepConquer,
-            withReplacements: [
-                "world-age": stepState.world.age.description,
-                "winner-country": stepState.winner.name,
-                "taken-territory": stepState.territory.name,
-                "loser-country": stepState.looser.name
-            ])
+    private func showWorldState(_ viewState: StepViewState) {
+        var text = viewState.conquer
 
-        if stepState.looser.isDefeated {
-            text += " \(localizer.localize(keyPath: \.gameStepDefeated, withReplacements: ["loser-country": stepState.looser.name]))"
+        if let defeated = viewState.defeated {
+            text += " \(defeated)"
         }
         display(text)
     }
 
-    private func showWinner(_ winner: Country) {
-        display(localizer.localize(keyPath: \.gameEndedWinner, withReplacements: ["winner-country": winner.name]))
+    private func showWinner(_ viewState: WinnerViewState) {
+        display(viewState.gameEndMessage)
     }
 
-    private func showError() {
-        let text = localizer.localize(keyPath: \.gameError)
-        logger.error(Logger.Message(stringLiteral: text))
+    private func showError(_ viewState: ErrorViewState) {
+        logger.error(Logger.Message(stringLiteral: viewState.message))
     }
-    
 
     private func display(_ text: String) {
         logger.info(Logger.Message(stringLiteral: text))

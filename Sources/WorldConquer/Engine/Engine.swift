@@ -4,6 +4,13 @@ enum EngineError: Error {
     case invalidState
 }
 
+public struct StepState {
+    let world: World
+    let winner: Country
+    let looser: Country
+    let territory: Territory
+}
+
 final class Engine {
     private var world: World
     private let closenessCalculator: ClosenessCalculator

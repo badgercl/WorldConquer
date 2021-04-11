@@ -36,15 +36,17 @@ struct WorldConquerApp: ParsableCommand {
                 logger: logger)
 
             if let telegramView = configureTelegram(
-                telegramConfig: config?.telegram,
-                localizer: localizer) {
+                telegramConfig: config?.telegram) {
                 views.append(telegramView)
                 logger.info("Telegram enabled")
             }
 
             if console {
-                views.append(ConsoleView(localizer: localizer))
+                views.append(ConsoleView())
             }
+
+            let gameSettings = GameSettings(moreInfoURL: config?.general?.moreInfoURL)
+            let gameViewStateMapper = GameViewStateMapperImpl(config: gameSettings, localizer: localizer)
 
             let game = try SingleStepGame(
                 worldFilePath: jsonPath,
@@ -52,7 +54,8 @@ struct WorldConquerApp: ParsableCommand {
                 winningTerritoryCalculator: winningTerritoryCalculator,
                 views: views,
                 logger: logger,
-                isTest: test)
+                isTest: test,
+                gameViewStateMapper: gameViewStateMapper)
             game.start()
 
         } catch {
@@ -74,14 +77,13 @@ struct WorldConquerApp: ParsableCommand {
             path: path)
     }
 
-    private func configureTelegram(telegramConfig: TelegramConfig?, localizer: Localizer) -> TelegramView? {
+    private func configureTelegram(telegramConfig: TelegramConfig?) -> TelegramView? {
         guard let telegramConfig = telegramConfig else {
             return nil
         }
         return TelegramView(
             token: telegramConfig.token,
-            chatId: telegramConfig.chat_id,
-            localizer: localizer)
+            chatId: telegramConfig.chat_id)
     }
 }
 

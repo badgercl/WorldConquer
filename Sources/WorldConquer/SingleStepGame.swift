@@ -5,6 +5,7 @@ public final class SingleStepGame: Game {
     private let engine: Engine
     private let viewsManager: ViewsManager
     private let persistency: WorldPersistency
+    private let gameViewStateMapper: GameViewStateMapper
     private let isInitialStep: Bool
     private let isTest: Bool
 
@@ -14,8 +15,10 @@ public final class SingleStepGame: Game {
                 views: [View],
                 logger: Logger,
                 isTest: Bool,
+                gameViewStateMapper: GameViewStateMapper,
                 persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
         self.persistency = persistency
+        self.gameViewStateMapper = gameViewStateMapper
         self.isTest = isTest
         appLogger = logger
         isInitialStep = worldFilePath != nil
@@ -38,14 +41,15 @@ public final class SingleStepGame: Game {
 
             if isInitialStep {
                 logInfo("First step, creating the world")
-                viewsManager.render(.start(engine.currentWorld))
+                viewsManager.render(gameViewStateMapper.toStartState(world: engine.currentWorld))
             } else {
                 logInfo("Intermediate step year \(engine.currentWorld.age.description)")
                 let stepState = try engine.step()
-                viewsManager.render(.step(stepState))
+
+                viewsManager.render(gameViewStateMapper.toStepState(from: stepState))
 
                 if let winner = engine.winner {
-                    viewsManager.render(.winner(winner))
+                    viewsManager.render(gameViewStateMapper.toWinnerState(winner))
                 }
             }
 
@@ -58,7 +62,7 @@ public final class SingleStepGame: Game {
             logInfo("Game step successfully ended")
         } catch {
             logError("Game ended with error: \(error)")
-            viewsManager.render(.error)
+            viewsManager.render(gameViewStateMapper.toErrorState())
             exit(2)
         }
     }

@@ -14,8 +14,13 @@ struct ConfigurationProvider {
 }
 
 struct Configuration: Decodable {
+    let general: GeneralConfig?
     let telegram: TelegramConfig?
     let localization: LocalizationConfig?
+}
+
+struct GeneralConfig: Decodable {
+    let moreInfoURL: URL?
 }
 
 struct TelegramConfig: Decodable {
