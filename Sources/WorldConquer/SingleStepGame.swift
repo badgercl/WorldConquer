@@ -47,6 +47,7 @@ public final class SingleStepGame: Game {
                 let stepState = try engine.step()
 
                 viewsManager.render(gameViewStateMapper.toStepState(from: stepState))
+                StepExporter().export(stepState: stepState)
 
                 if let winner = engine.winner {
                     viewsManager.render(gameViewStateMapper.toWinnerState(winner))

@@ -2,6 +2,7 @@ import Foundation
 
 public protocol Age: Codable {
     func nextAge() -> Age
+    var withPadding: String { get }
     var description: String { get }
 }
 
@@ -22,6 +23,10 @@ struct LinearAge: Age {
 
     public func nextAge() -> Age {
         LinearAge(age: age + 1)
+    }
+
+    var withPadding: String {
+        String(format: "%04d", age)
     }
 
     var description: String {

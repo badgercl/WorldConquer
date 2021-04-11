@@ -56,6 +56,15 @@ struct WorldConquerApp: ParsableCommand {
                 logger: logger,
                 isTest: test,
                 gameViewStateMapper: gameViewStateMapper)
+//            let game = try MultiStepGame(
+//                worldFilePath: jsonPath,
+//                closenessCalculator: closenessCalculator,
+//                winningTerritoryCalculator: winningTerritoryCalculator,
+//                views: views,
+//                logger: logger,
+//                stepTime: 0,
+//                gameViewStateMapper: gameViewStateMapper)
+
             game.start()
 
         } catch {

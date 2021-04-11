@@ -35,6 +35,7 @@ public final class MultiStepGame: Game {
             do {
                 let stepState = try engine.step()
                 viewsManager.render(gameViewStateMapper.toStepState(from: stepState))
+                StepExporter().export(stepState: stepState)
 
                 if let winner = engine.winner {
                     viewsManager.render(gameViewStateMapper.toWinnerState(winner))
