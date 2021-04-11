@@ -2,7 +2,7 @@
     "game_started_header": "Game started.",
     "game_started_body": "Initial World:",
     "game_step_conquer": "In year %{world-age}, *%{winner-country}* conquered *%{taken-territory}* which was previously occupied by *%{loser-country}*.",
-    "game_step_top": "Top %{top-number} empires:\n%{top-countries}.",
+    "game_step_top": "Top %{top-number} empires:\n%{top-countries}",
     "game_step_defeated": "*%{loser-country}* has been completely defeated.",
     "game_step_more_info": "Detailed world info in: %{more-info-url}",
     "game_ended_winner": "*%{winner-country}* has conquered the world!",

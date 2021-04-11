@@ -64,8 +64,7 @@ public struct GameViewStateMapperImpl: GameViewStateMapper {
             .filter { $0.territories.count > 1 }
             .prefix(topNumber)
             .map {
-                let territories = $0.territories.map(\.name).joined(separator: ", ")
-                return " - *\($0.name)* (\($0.territories.count)): [\(territories)]"
+                return " - *\($0.name)* (\($0.territories.count))"
             }
             .joined(separator: "\n")
         let stepConquer = localizer.localize(
