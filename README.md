@@ -7,16 +7,16 @@ Swift implementation based on [World War Bot's rules](https://worldwarbot.com/ab
 - Can use any World configuration as a JSON file.
 - Customizable rules: different winner and conquered territory implementation can be supported.
 - Customizable output: the game status can be updated in different supports, e.g. Twitter, Telegram, console log, filesystem. (Currently only console output is provided).
+- Dot-notation world states
+- Internationalisation
+- Telegram plugin
 
 ## Future work
-- Include more selection rules
-- Implement Telegram and Twitter outputs
-- Generate dot-notation world states
-- Internationalisation
+- Twitter plugin
 - Interactions with the bot
 
 # Requirements
-* Swift 5.2.2+ installed in your macOS or Linux machine. 
+* Swift 5.3+ installed in your macOS or Linux machine. 
 
 # Installing swift
 1. For macOS users, it comes included with Xcode, you can download from the App Store:
@@ -36,7 +36,14 @@ Swift implementation based on [World War Bot's rules](https://worldwarbot.com/ab
 # Running the game
 You can get the latest available commands by runing `swift run WorldConquerApp -h`
 
-For instance, for running a game using the provided Earth map and see the output in the console you can run the following command from the root level
+For instance, to bootstrap a game using the provided Earth map and see the output in the console you can run the following command from the root level
 ```bash
-swift run WorldConquerApp --json worlds/earth.json --verbose
+swift run WorldConquerApp --json worlds/earth.json --console
 ```
+
+and then every step is processed by calling
+```bash
+swift run WorldConquerApp --console
+```
+
+When a country has conquered the whole world, the game will output the winner and no more steps will be processd.
