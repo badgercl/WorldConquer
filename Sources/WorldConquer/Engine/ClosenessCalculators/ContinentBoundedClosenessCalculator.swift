@@ -1,9 +1,16 @@
 import Foundation
 
 public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
-    private let correctionFactor = 0.5
+    private let correctionFactor: Double
+    private let randomizer: Randomizer
 
-    public init() { }
+    public init(
+        randomizer: Randomizer = RandomizerImpl(),
+        correctionFactor: Double = 0.5
+                ) {
+        self.randomizer = randomizer
+        self.correctionFactor = correctionFactor
+    }
 
     public func getCloseTerritory(for territory: Territory, in world: World) -> Territory? {
         guard let continent = world
@@ -33,7 +40,7 @@ public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
             return true
         }
         let chanceToConquerOtherContinent = (Double(totalConquered) / Double(totalUnconquered + totalConquered)) * correctionFactor
-        let willConquerOtherContinent = chanceToConquerOtherContinent > Double.random(in: 0...1)
+        let willConquerOtherContinent = chanceToConquerOtherContinent > randomizer.double(in: 0...1)
         return willConquerOtherContinent
     }
 
@@ -44,7 +51,7 @@ public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
             .map(\.territories)
             .reduce([], +)
             .filter { $0.belongsTo.name != winner.belongsTo.name }
-        guard let conqueredTerritory = nonConqueredTerritories.randomElement() else {
+        guard let conqueredTerritory = randomizer.pickRandom(from: nonConqueredTerritories) else {
             return pickLoosingTerritoryFrom(continent: currentContinent, winnerTerritory: winner)
         }
         return conqueredTerritory
@@ -54,7 +61,7 @@ public struct ContinentBoundedClosenessCalculator: ClosenessCalculator {
         let otherTerritories = continent
             .territories
             .filter { $0.belongsTo != winnerTerritory.belongsTo }
-        guard let territory = otherTerritories.randomElement() else {
+        guard let territory = randomizer.pickRandom(from: otherTerritories) else {
             return winnerTerritory
         }
         return territory
