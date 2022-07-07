@@ -35,8 +35,7 @@ struct WorldConquerApp: ParsableCommand {
                 localizationConfig: config?.localization,
                 logger: logger)
 
-            if let telegramView = configureTelegram(
-                telegramConfig: config?.telegram) {
+            if let telegramView = configureTelegram(telegramConfig: config?.telegram) {
                 views.append(telegramView)
                 logger.info("Telegram enabled")
             }

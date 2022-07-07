@@ -9,14 +9,16 @@ public final class SingleStepGame: Game {
     private let isInitialStep: Bool
     private let isTest: Bool
 
-    public init(worldFilePath: String?,
-                closenessCalculator: ClosenessCalculator,
-                winningTerritoryCalculator: WinningTerritoryCalculator,
-                views: [View],
-                logger: Logger,
-                isTest: Bool,
-                gameViewStateMapper: GameViewStateMapper,
-                persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())) throws {
+    public init(
+        worldFilePath: String?,
+        closenessCalculator: ClosenessCalculator,
+        winningTerritoryCalculator: WinningTerritoryCalculator,
+        views: [View],
+        logger: Logger,
+        isTest: Bool,
+        gameViewStateMapper: GameViewStateMapper,
+        persistency: WorldPersistency = SingleFileWorldPersistency(jsonWorldProvider: JsonWorldProvider())
+    ) throws {
         self.persistency = persistency
         self.gameViewStateMapper = gameViewStateMapper
         self.isTest = isTest
